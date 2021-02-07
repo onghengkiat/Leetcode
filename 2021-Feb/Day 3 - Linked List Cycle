@@ -1,0 +1,43 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+
+/* Kind of cheating solution :P
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        ListNode *node = head;
+        int count = 0;
+        while(node){
+            count ++;
+            node = node -> next;
+            //The number of nodes given from question won't more than 10000
+            if(count > 10000){
+                return true;
+            }
+        }
+        return false;
+    }
+};
+*/
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        
+        ListNode *node = head;
+        while(node){
+            
+            if(node -> val == NULL){
+                return true;
+            }
+            node -> val = NULL;
+            node = node ->next;
+        }
+        return false;
+    }
+};
