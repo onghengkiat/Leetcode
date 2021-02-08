@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<int> shortestToChar(string s, char c) {
+        vector<int> answer ;
+        //set it as the minimum value so that it will be replaced by the value when checks from right at the front part 
+        //where c is not found yet when checking from left
+        int prevC = -100000;
+        //checks from left
+        for(int i =0 ; i < s.length() ; i++){
+            if(s[i] == c){
+                prevC = i;
+            }
+            answer.push_back(i-prevC);
+        }
+        
+        //checks from right
+        //set it as the maximum value so that it wont replace the value when checks from right before c is found
+        prevC = 100000;
+        for(int i = s.length() - 1 ;  i >= 0 ; i--){
+            if(s[i] == c){
+                prevC = i;
+                continue;
+            }
+            answer[i] = min(answer[i], prevC - i);
+        }
+        return answer;
+    }
+};
