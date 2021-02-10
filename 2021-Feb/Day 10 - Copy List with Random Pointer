@@ -1,0 +1,36 @@
+/*
+// Definition for a Node.
+class Node {
+public:
+    int val;
+    Node* next;
+    Node* random;
+    
+    Node(int _val) {
+        val = _val;
+        next = NULL;
+        random = NULL;
+    }
+};
+*/
+
+class Solution {
+public:
+    unordered_map <Node*,Node*>oldNewNode;
+    Node* copyRandomList(Node* head) {
+        return travel(head);
+    }
+    
+    Node* travel(Node* oldNode){
+        if(oldNode){
+            auto found = oldNewNode.find(oldNode);
+            if(found != oldNewNode.end())return found->second;
+            Node* newNode = oldNewNode[oldNode]= new Node(oldNode->val);
+            newNode->next = travel(oldNode -> next);
+            newNode->random =travel(oldNode->random);
+            return newNode;            
+        }
+        return NULL;
+    }
+    
+};
