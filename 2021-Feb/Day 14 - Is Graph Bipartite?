@@ -1,0 +1,36 @@
+class Solution {
+public:
+    bool isBipartite(vector<vector<int>>& graph) {
+        
+        int graphSize = graph.size();
+        if(graphSize < 2)return true;
+        
+        vector <short> group (graphSize);
+        
+        bool *visited = new bool[graphSize];
+        memset(visited, 0, sizeof(bool) * graphSize);
+        
+        queue<pair<int,int>> lastStep;
+        for(int i = 0 ; i < graphSize; i ++){
+            if(visited[i]) continue;
+            lastStep.push({i,1});
+
+            while(!lastStep.empty()){
+                int cur = lastStep.front().first;
+                int curGroup = lastStep.front().second;
+                lastStep.pop();
+
+                visited[cur]= true;
+                group[cur] = curGroup;
+
+                for(int j : graph[cur]){
+                    if(group[j] == curGroup) return false;
+                    if(!visited[j]) lastStep.push({j,curGroup*-1});
+                }
+
+            }
+        }
+        return true;
+        
+    }
+};
