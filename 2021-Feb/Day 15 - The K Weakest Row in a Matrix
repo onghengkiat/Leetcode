@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector<int> kWeakestRows(vector<vector<int>>& mat, int k) {
+        int numOfRow = mat.size();
+        vector<pair<int,int>> count(numOfRow);
+        for(int i = 0 ; i < numOfRow; i ++){
+            int countOfOne = 0;
+            for(int num : mat[i]){
+                if(num == 1) countOfOne ++;
+            }
+            count[i] = {countOfOne,i};
+        }
+        
+        sort(count.begin(), count.end());
+        vector<int> answer;
+        for(int i = 0 ; i < k ; i++){
+            answer.push_back(count[i].second);
+        }
+        return answer;
+    }
+};
