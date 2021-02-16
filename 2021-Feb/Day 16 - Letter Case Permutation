@@ -1,0 +1,20 @@
+class Solution {
+public:
+    vector<string> ans;
+    vector<string> letterCasePermutation(string S) {
+        recurse(S, "");
+        return ans;
+    }
+    
+    void recurse(string str, string temp){
+        if(str.length() == temp.length()){ans.push_back(temp);return;}
+        string temp1 = temp;
+        string temp2 = temp;
+        if(str[temp.length()] - '0' <= 9) recurse(str, temp1 += str[temp.length()]);
+        else{
+        recurse(str, temp1 += toupper(str[temp.length()]));
+        recurse(str, temp2 += tolower(str[temp.length()]));
+        }
+        
+    }
+};
