@@ -26,3 +26,28 @@ public:
         }
     }
 };
+
+//Solution using sum of a arithmetic series in the total() method
+class Solution {
+public:
+    int numberOfArithmeticSlices(vector<int>& A) {
+        if(A.size() < 3) return 0;
+        
+        int difference = A[1] - A[0];
+        int count = 2;
+        int answer =0;
+        for(int i = 2 ; i < A.size(); i++){
+            if(A[i] - A[i-1] != difference){
+                difference = A[i] - A[i-1];
+                if(count > 2) answer += total(count - 2);
+                count = 2;
+            }else count ++;
+        }
+        if(count > 2) answer += total(count - 2);
+        return answer;
+    }
+    
+    int total(int num){
+        return (1+num)/2.0*num;
+    }
+};
