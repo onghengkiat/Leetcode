@@ -1,0 +1,35 @@
+class Solution {
+public:
+    int divide(int dividend, int divisor) {
+        bool negative = false;
+        if(dividend < 0 && divisor < 0 ) negative = false;
+        else if(dividend < 0 || divisor < 0 ) negative = true;
+        
+        
+        long long int nominator = abs((long long int)dividend);
+        long long int denominator = abs((long long int)divisor);
+        
+        long long int quotient = 0;
+        long long int mask = 1;
+        
+        while(nominator >= denominator){
+            denominator = denominator << 1;
+            mask = mask << 1;
+        }
+        
+        //do the division from the most significant bits
+         while (mask > 1){
+            denominator >>= 1;
+            mask >>= 1;        
+            if (nominator >= denominator){
+                nominator -= denominator;
+                quotient |= mask;
+            }
+             
+        }
+ 
+        if(negative) {if(quotient >= pow(2,31)) return -pow(2,31);}
+        else if(quotient >= pow(2,31) - 1) return pow(2,31)-1;
+        return negative?-quotient:quotient;
+    }
+};
