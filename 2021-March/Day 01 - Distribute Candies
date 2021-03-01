@@ -1,0 +1,12 @@
+class Solution {
+public:
+    int distributeCandies(vector<int>& candyType) {
+        set <int> type ;
+        for(int t : candyType) type.insert(t);
+        
+        
+        int max = candyType.size()/2;
+        if(type.size() >= max) return max;
+        else return type.size();
+    }
+};
