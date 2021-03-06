@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int minimumLengthEncoding(vector<string>& words) {
+        set <string> s ;
+        for(string word : words) s.insert(word);
+        for(string word : words){
+            string temp = "";
+            for(int i = word.length() - 1 ; i > 0; i--){
+                temp = word[i] + temp;
+                s.erase(temp);
+            }
+        }
+        
+        string answer = "";
+        for(string word : s){
+            answer += word + "#";
+        }
+        
+        return answer.length();
+    }
+};
