@@ -1,0 +1,16 @@
+class Solution {
+public:
+    bool hasAllCodes(string s, int k) {
+        int size = pow(2,k);
+        bool distinct[size];
+        memset(distinct, false, sizeof(bool)*size);
+        int lastIdx = s.length() - k ;
+        for(int i = 0 ; i <= lastIdx ; i++){
+            int pos = stoi(s.substr(i,k),0,2);
+            distinct[pos] = true;
+        }
+        
+        for(int i = 0; i < size; i ++) if(!distinct[i]) return false;
+        return true;
+    }
+};
