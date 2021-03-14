@@ -1,0 +1,62 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* swapNodes(ListNode* head, int k) {
+        int total = 0;
+        ListNode* cur = head;
+        ListNode* previous1 = NULL;
+        ListNode* node1 = NULL;
+        ListNode* previous2 = NULL;
+        ListNode* node2 = NULL;
+        
+        while(cur){
+            total ++;
+            if(total == k - 1) previous1 = cur;
+            else if(total == k) node1 = cur;
+            cur = cur -> next;
+        }
+        
+        cur = head;
+        int target = total - k + 1;
+        int count = 0;
+        while(cur){
+            count ++;
+            if(count == target){node2= cur; break;} 
+            else if(count == target - 1) previous2 = cur;
+            cur = cur -> next;
+        }
+        
+        if(node1 == node2) return head;
+        
+        if(previous2 == node1){
+            node1 -> next = node2 -> next;
+            node2 -> next = node1;
+            if(previous1) previous1 -> next = node2;
+            else return node2;
+        }else if(previous1 == node2){
+            node2 -> next = node1 -> next;;
+            node1 -> next = node2;
+            if(previous2) previous2 -> next = node1;
+            else return node1;
+        }else{
+            ListNode* temp = node1 -> next;
+            node1 -> next = node2 -> next;
+            node2 -> next = temp;
+            if(!previous1){previous2 -> next = node1; return node2;}
+            if(!previous2){previous1 -> next = node2; return node1;}
+            
+            previous2 -> next = node1;previous1 -> next = node2;
+            return head;
+        }
+        return head;
+    }
+};
