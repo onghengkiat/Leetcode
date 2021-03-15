@@ -1,0 +1,50 @@
+//referring to the following website
+//https://www.geeksforgeeks.org/how-to-design-a-tiny-url-or-url-shortener/
+
+class Solution {
+public:
+    map<int,string> IDtoLongURL;
+    int counter = 0;
+    
+    // Encodes a URL to a shortened URL.
+    string encode(string longUrl) {
+        IDtoLongURL[counter] = longUrl;
+        return IDtoURL(counter++);
+    }
+
+    // Decodes a shortened URL to its original URL.
+    string decode(string shortUrl) {
+        return IDtoLongURL[URLtoID(shortUrl)];
+    } 
+    
+    string IDtoURL(long int n) { 
+        char map[] = "abcdefghijklmnopqrstuvwxyzABCDEF"
+                     "GHIJKLMNOPQRSTUVWXYZ0123456789"; 
+
+        string shorturl; 
+        while (n) { 
+            shorturl.push_back(map[n%62]); 
+            n = n/62; 
+        } 
+        reverse(shorturl.begin(), shorturl.end()); 
+        return shorturl; 
+    }
+
+    long int URLtoID(string shortURL) { 
+        long int id = 0; 
+        for (int i=0; i < shortURL.length(); i++) { 
+            if ('a' <= shortURL[i] && shortURL[i] <= 'z') 
+              id = id*62 + shortURL[i] - 'a'; 
+            if ('A' <= shortURL[i] && shortURL[i] <= 'Z') 
+              id = id*62 + shortURL[i] - 'A' + 26; 
+            if ('0' <= shortURL[i] && shortURL[i] <= '9') 
+              id = id*62 + shortURL[i] - '0' + 52; 
+        } 
+        return id; 
+    } 
+};
+
+// Your Solution object will be instantiated and called as such:
+// Solution solution;
+// solution.decode(solution.encode(url));
+
