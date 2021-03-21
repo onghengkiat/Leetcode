@@ -1,0 +1,30 @@
+class Solution {
+public:
+    bool reorderedPowerOf2(int N) {
+        map<int,int> count;
+        int numberOfDigits = 0;
+        while(N != 0 ){
+            int digit = N%10;
+            count[digit] ++;
+            N /=10;
+            numberOfDigits ++;
+        }
+        // 2^n = 10^x will have x+1 digits
+        // x = nlog(2)
+        // x+1 = nlog(2) + 1
+        // (numberOfDigits -1 )/log(2) = n
+        int n = ceil((numberOfDigits-1)/log10(2));
+        for(int i = 0 ; i< 4 ; i++){
+            int num = pow(2,n+i);
+            map<int,int>count2;
+            while(num != 0 ){
+                int digit = num%10;
+                count2[digit] ++;
+                num /=10;
+            }
+            if(count2 == count) return true;
+        }
+        
+        return false;
+    }
+};
