@@ -1,0 +1,52 @@
+class Solution {
+public:
+    vector<string> spellchecker(vector<string>& wordlist, vector<string>& queries) {
+        map<string,string> original;
+        map<string,string> upperCase;
+        map<string,string> vowelRemove;
+        
+        for(string word : wordlist){
+            original.insert({word,word});
+            
+            string uppercaseWord = to_upper(word);
+            if(upperCase.find(uppercaseWord) == upperCase.end()) upperCase.insert({uppercaseWord, word});
+            
+            string wordWithoutVowel = removeVowel(uppercaseWord);
+            if(vowelRemove.find(wordWithoutVowel) == vowelRemove.end()) vowelRemove.insert({wordWithoutVowel,word});
+        }
+        
+        vector<string> answer;
+        for(string word : queries){
+            if(original.find(word) != original.end()) {answer.push_back(word); continue;}
+            
+            string uppercaseWord = to_upper(word);
+            if(upperCase.find(uppercaseWord) != upperCase.end()) {answer.push_back(upperCase[uppercaseWord]); continue;}
+            
+            string wordWithoutVowel = removeVowel(uppercaseWord);
+            answer.push_back(vowelRemove[wordWithoutVowel]);
+        }
+        
+        return answer;
+    }
+    
+    string to_upper(string word){
+        string newWord = "";
+        for(char c : word){
+            newWord += toupper(c);
+        }
+        return newWord;
+    }
+    
+    string removeVowel(string word){
+        string newWord = "";
+        for(char c : word){
+            if(isVowel(c)) newWord += "-";
+            else newWord += c;
+        }
+        return newWord;
+    }
+    
+    bool isVowel(char c){
+        return (c=='A' || c=='E' || c =='I' || c =='O' || c =='U');
+    }
+};
