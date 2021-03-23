@@ -1,0 +1,44 @@
+class Solution {
+public:
+    int threeSumMulti(vector<int>& arr, int target) {
+        sort(arr.begin(), arr.end());
+        int left = 0 ;
+        int right = arr.size() - 1;
+        int answer = 0 ;
+        for(int i = 0 ; i < arr.size() - 2 ;i ++){
+            int tar = target - arr[i];
+            int left = i + 1 , right = arr.size() - 1;
+            while(left < right){
+                int sum = arr[left] + arr[right];
+                if(sum > tar) right--;
+                else if (sum < tar) left ++;
+                else{
+                    if(arr[left] == arr[right]){
+                        int count = right - left + 1;
+                        if(count%2==0) answer = (answer + (count/2*(count-1) ))%(1000000007);
+                        else answer = (answer + (count*(count-1)/2))%(1000000007);
+                        break;
+                        
+                    }
+                    int l = 1;
+                    int r = 1;
+                    while(left < right && arr[left] == arr[left+1]){
+                        left ++;
+                        l++;
+                    }
+                    
+                    while(left < right && arr[right] == arr[right-1]){
+                        right --;
+                        r++;    
+                    }
+                    answer = (answer+l*r)%(1000000007);
+                    left ++;
+                    right --;
+                    
+                }
+            }
+        }
+        return answer;
+    }
+    
+};
