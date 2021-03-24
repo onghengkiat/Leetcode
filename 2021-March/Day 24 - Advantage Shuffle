@@ -1,0 +1,24 @@
+class Solution {
+public:
+    vector<int> advantageCount(vector<int>& A, vector<int>& B) {
+        sort(A.begin(), A.end());
+        vector<int> remaining = A;
+        
+        for(int i = 0 ; i < A.size() ; i ++){
+            
+            auto low = lower_bound(remaining.begin(),remaining.end(), B[i]);
+            if(low == remaining.end()){
+                A[i] = remaining[0];
+                remaining.erase(remaining.begin());
+            }else{
+                int idx = low - remaining.begin();
+                while(idx < remaining.size() - 1 && remaining[idx] == B[i]){
+                    idx++;
+                }
+                if(B[i] == remaining[idx]) {A[i] = remaining[0];remaining.erase(remaining.begin());}
+                else {A[i] = remaining[idx];remaining.erase(remaining.begin()+idx);}
+            }
+        }
+        return A;
+    }
+};
