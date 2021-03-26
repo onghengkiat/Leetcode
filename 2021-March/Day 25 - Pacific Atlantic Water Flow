@@ -1,0 +1,38 @@
+class Solution {
+public:
+    
+    vector<vector<int>> answer;
+    
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& matrix) {
+        int rowNum = matrix.size();
+        if(rowNum ==0 )return answer;
+        int colNum = matrix[0].size();
+        
+        vector<vector<bool>> visited1 (rowNum, vector<bool>(colNum,false));
+        vector<vector<bool>> visited2 (rowNum, vector<bool>(colNum,false));
+        
+        for(int i = 0; i < colNum ; i++) bfs(matrix,0, i, matrix[0][i], visited1);
+        for(int i = 1; i < rowNum ; i++) bfs(matrix,i, 0, matrix[i][0],visited1);
+        
+        for(int i = 0 ; i < rowNum ; i++) bfs(matrix,i,colNum-1,matrix[i][colNum-1], visited2);
+        for(int i = 0 ; i < colNum - 1; i ++) bfs(matrix,rowNum-1, i, matrix[rowNum-1][i],visited2);
+        
+        for(int i = 0; i < rowNum; i ++){
+            for(int j = 0; j < colNum ; j++){
+                if(visited1[i][j] && visited2[i][j]) answer.push_back(vector<int>{i,j});
+            }
+        }
+        return answer;
+    }
+    
+    void bfs(vector<vector<int>>& matrix,int i , int j, int prev_value, vector<vector<bool>> &visited){
+        if(i >= matrix.size() || i < 0 || j < 0 || j >= matrix[i].size() || visited[i][j] || matrix[i][j] < prev_value) return;
+        int val = matrix[i][j];
+        visited[i][j] = true;
+        bfs(matrix,i-1,j,val, visited);
+        bfs(matrix,i+1,j,val,visited);
+        bfs(matrix,i,j-1,val,visited);
+        bfs(matrix,i,j+1,val,visited);
+    }
+    
+};
