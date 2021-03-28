@@ -1,0 +1,53 @@
+class Solution {
+public:
+    string originalDigits(string s) {
+        /*
+        find out the unique characters
+        
+        First batch
+        zero   >> z
+        two    >> w
+        four   >> u
+        six    >> x
+        eight  >> g
+        
+        Duplicate with zero,two,four
+        one    >> o 
+        
+        Duplicate with eight
+        three  >> h
+        
+        Duplicate with four
+        five   >> f
+        
+        Duplicate with five
+        seven  >> v
+        
+        Duplicate with five,six,eight
+        nine   >> i
+        */
+        
+        int count[26];
+        memset(count,0,sizeof(int) * 26);
+        for(char c: s) count[c-'a'] ++;
+        
+        int countOfNum [10];
+        countOfNum[0] = count['z' - 'a'];
+        countOfNum[2] = count['w' - 'a'];
+        countOfNum[4] = count['u' - 'a'];
+        countOfNum[6] = count['x' - 'a'];
+        countOfNum[8] = count['g' - 'a'];
+        
+        countOfNum[1] = count['o' - 'a'] - countOfNum[0] - countOfNum[2] - countOfNum[4];
+        countOfNum[3] = count['h' - 'a'] - countOfNum[8];
+        countOfNum[5] = count['f' - 'a'] - countOfNum[4];
+        countOfNum[7] = count['v' - 'a'] - countOfNum[5];
+        countOfNum[9] = count['i' - 'a'] - countOfNum[5] - countOfNum[6] - countOfNum[8];
+        
+        string answer ="";
+        for(int i = 0 ; i <= 9 ; i++){
+            answer += string(countOfNum[i], char('0' +i) );
+        }
+        return answer;
+    }
+};
