@@ -1,0 +1,40 @@
+class Solution {
+public:
+    vector<int> movesToStamp(string stamp, string target) {
+        int stampLen = stamp.size();
+        int tarSize = target.size();
+        vector<int> answer;
+        string temp = string(tarSize,'?');
+        bool stamped = true;
+        
+        while(stamped && temp != target){
+            int start = 0;
+            stamped = false;
+            while(start + stampLen <= tarSize){
+                if(isEqual(stamp, target.substr(start,stampLen))){
+                    answer.push_back(start);
+                    for(int j = start;  j < start + stampLen ; j++)
+                        target[j] = '?';
+                    stamped=true;
+                }
+                start ++;
+            }
+        }
+        reverse(answer.begin(),answer.end());
+        if (target == temp) return answer;
+        return vector<int>(0,0);
+    }
+    
+    bool isEqual(string a, string b){
+        int count = 0;
+        for (int i = 0 ; i < a.size() ; i++){
+            if(a[i] != b[i] && b[i] != '?') return false;
+            if (b[i] =='?') count++;
+        }
+        
+        return count < b.size();
+    }
+    
+    
+
+};
