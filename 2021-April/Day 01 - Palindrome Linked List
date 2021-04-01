@@ -1,0 +1,64 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    bool isPalindrome(ListNode* head) {
+        ListNode* cur = head;
+        int count = 0;
+        while(cur){
+            cur = cur -> next;
+            count ++;
+        }
+        
+        if (count <= 1) return true;
+
+        ListNode* previous = head;
+        cur = previous-> next;
+        int half = count/2;
+        
+        for(int i = 1; i < half ; i++){
+            ListNode* temp = cur;
+            cur = cur -> next;
+            temp -> next = previous; 
+            previous = temp;
+            
+        }
+        
+        ListNode* firstHalf = previous;
+        ListNode* breakPoint = cur;
+        if(count %2 == 1){
+            cur = cur -> next;
+        }
+        
+        for(int i = 0 ; i< half; i++){
+            if(cur -> val != previous -> val){
+                revertNormal(firstHalf,breakPoint, half); 
+                return false;
+            }
+            previous = previous->next;
+            cur = cur->next;
+        }
+        
+        //revert the linkedlist back to normal
+        revertNormal(firstHalf,breakPoint,half);
+        return true;
+    }
+    
+    void revertNormal(ListNode* firstHalf, ListNode* breakPoint, int half){
+        for(int i = 1; i < half ; i++){
+            
+            ListNode* next = firstHalf -> next;
+            firstHalf -> next = breakPoint;
+            breakPoint = firstHalf;
+            firstHalf = next;
+        }
+    }
+};
