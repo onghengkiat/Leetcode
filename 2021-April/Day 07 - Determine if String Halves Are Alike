@@ -1,0 +1,23 @@
+class Solution {
+public:
+    bool halvesAreAlike(string s) {
+        int countA = 0;
+        int countB = 0;
+        int half = s.size()/2;
+        string a = s.substr(0,half);
+        string b = s.substr(half);
+        for(char c : a){
+            if(isVowel(c)) countA ++;
+        }
+        
+        for(char c : b){
+            if(isVowel(c)) countB ++;
+        }
+        
+        return countA == countB;
+    }
+    
+    bool isVowel(char c){
+        return c =='a' || c =='e' || c =='i' || c == 'o' || c == 'u' || c =='A' || c =='E' || c=='I' || c=='O' || c=='U';
+    }
+};
