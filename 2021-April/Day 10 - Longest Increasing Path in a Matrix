@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int dp[200][200] = {0};
+    bool visited[200][200] = {false};
+    
+    int longestIncreasingPath(vector<vector<int>>& matrix) {
+        int rows = matrix.size();
+        int cols = matrix[0].size();
+        
+        
+        int longestPath = 1;
+        for(int i = 0 ; i < rows; i ++){
+            for(int j = 0 ; j < cols ; j ++){
+                longestPath = max(longestPath, dfs(i,j,1,matrix));
+            }
+        }
+        return longestPath;
+    }
+    
+    int dfs(int i , int j, int count, vector<vector<int>>& matrix) {
+        if(visited[i][j]) {return dp[i][j] + count;}
+        else{
+            int temp = count;
+            
+            visited[i][j] = true;
+            
+            int cur = matrix[i][j];
+            if(i > 0 && matrix[i-1][j] > cur ) temp = max(temp, dfs(i-1,j,count+1,matrix));
+            if(j > 0 && matrix[i][j-1] > cur ) temp = max(temp, dfs(i,j-1,count+1,matrix));
+            if(i < matrix.size() - 1 && matrix[i+1][j] > cur ) temp = max(temp, dfs(i+1,j,count+1,matrix));
+            if(j < matrix[0].size() - 1 && matrix[i][j+1] > cur ) temp = max(temp, dfs(i,j+1,count+1,matrix));
+            dp[i][j] = temp - count;
+            return temp;
+        }
+    }
+};
