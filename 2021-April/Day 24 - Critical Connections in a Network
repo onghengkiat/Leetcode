@@ -1,0 +1,58 @@
+// referring https://leetcode.com/problems/critical-connections-in-a-network/discuss/1149382/Java-elegant-DFS-solution-with-comments
+class Solution {
+public:
+    unordered_map <int, vector<int>>graph;
+    vector<int> earliestTime;
+    int timestamp;
+    vector<vector<int>> answer;
+    
+    vector<vector<int>> criticalConnections(int n, vector<vector<int>>& connections) {
+        timestamp = 0;
+        earliestTime.resize(n,0);
+        
+        for (auto edge : connections) {
+            int u = edge[0];
+            int v = edge[1];
+            graph[u].push_back(v);
+            graph[v].push_back(u);
+        }
+        
+        dfs(0,-1);
+        return answer;
+    }
+    
+    void dfs(int currNode, int parentNode) {
+        // Only valid nodes are visited, no need of boundary check
+        
+        // The logic ensures this marks visit to an unvisited node, hence record the timestamp
+        earliestTime[currNode] = ++timestamp;
+        // This marks the timestamp we labeled the node when we first visited it
+        int currTime = earliestTime[currNode]; 
+        
+        vector<int> neighbors = graph[currNode];
+        
+        for (int nextNode : neighbors) {
+            if (nextNode == parentNode) {
+                // This won't give us any new information
+                continue;
+            }
+            
+            // Visit the next node if it has not been visited
+            if (earliestTime[nextNode] == 0) {
+                dfs(nextNode, currNode);
+            }
+            // This processing step is critical, and is done regardless if the neighbor gets visited in the
+            // line above
+            // As we continue DFS recursively, we record the minimum value for "earliestTime" while
+            // comparing with next node. This ensures that if there is a different path to the next node,
+            // then the earliest time of the next node will be same or less than the time we first arrived
+            // at current node. 
+            earliestTime[currNode] = min(earliestTime[currNode], earliestTime[nextNode]);
+            if (earliestTime[nextNode] > currTime) {
+                // Found critical edge
+                vector<int> ans {currNode, nextNode};
+                answer.push_back(ans);
+            }
+        }
+    }
+};
