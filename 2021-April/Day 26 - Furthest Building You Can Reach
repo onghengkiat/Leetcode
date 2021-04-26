@@ -1,0 +1,50 @@
+class Solution {
+public:
+    int furthestBuilding(vector<int>& heights, int bricks, int ladders) {
+        int prev = heights[0];
+        priority_queue<int> p;
+        if(ladders == 0){
+            for(int i = 1 ; i < heights.size() ; i ++){
+                if(heights[i] > prev){
+                    int diff = heights[i] - prev;
+                    if (diff > bricks) return i -1;
+                    bricks -= diff;
+                }
+                prev = heights[i];
+            }
+            return heights.size() - 1;
+        }
+        
+        for(int i = 1 ; i < heights.size() ; i ++){
+            if(heights[i] > prev) {
+                // makes it to become negative so that 
+                // priority queue pop the lowest magnitude
+                int diff = prev - heights[i];
+                
+                if(ladders != 0){
+                    p.push(diff);
+                    ladders--;
+                }else{
+                    int lowest_height = p.top();
+                    // it is in negative sign
+                    // so higher means lower magnitude
+                    if(lowest_height > diff){
+                        if(-lowest_height > bricks) return i - 1;
+                        
+                        p.pop();
+                        p.push(diff);
+                        bricks += lowest_height;
+                    }else{
+                     
+                        if(-diff > bricks) return i - 1;   
+                        bricks += diff;
+                    }
+                }
+                
+            }
+            prev = heights[i];
+        }
+        
+        return heights.size() - 1;
+    }
+};
