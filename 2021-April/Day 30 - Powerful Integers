@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<int> powerfulIntegers(int x, int y, int bound) {
+        set<int> answer;
+        if(x == 1 && y == 1){
+            if (bound >= 2) return vector<int> {2};
+            else return vector<int>();
+        }else if(x == 1){
+            for(int i = 1; i + 1 <= bound ; i *= y){
+                answer.insert(i+1);
+            }
+        }else if(y == 1){
+            for(int i = 1; i + 1 <= bound ; i *= x){
+                answer.insert(i+1);
+            }
+        }else {
+            for(int i = 1; i <= bound ; i *= x){
+                for(int j = 1 ; j + i <= bound ; j *= y){
+                    answer.insert(i+j);
+                }
+            }
+        }
+        return vector<int> {answer.begin(), answer.end()};
+    }
+};
