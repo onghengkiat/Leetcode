@@ -1,0 +1,71 @@
+class TrieNode {
+public:
+    TrieNode* children[27] = {NULL};
+    int index ;
+    TrieNode(int index): index(index) {}
+    
+    void addChild(char c, TrieNode* node){
+        if (c == '#') {this -> children[26] = node;}
+        else this -> children[c - 'a'] = node;
+    }
+};
+
+class WordFilter {
+public:
+    
+    TrieNode* root;
+    
+    WordFilter(vector<string>& words) {
+        this -> root = new TrieNode(-1);
+            
+        for(int j = 0 ; j < words.size(); j++){
+            string word = words[j];
+            string temp = "#" + word;
+            for(int i = word.size() - 1 ; i >= 0 ; i--){
+                temp = word[i] + temp;
+                this -> addWord(temp, j);
+            }
+        }
+        
+    }
+    
+    void addWord(string word, int idx){
+        TrieNode* cur = root;
+        for (char c : word){
+            TrieNode* nextLayer = NULL;
+            if(c == '#') nextLayer = cur -> children[26];
+            else nextLayer = cur -> children[c - 'a'];
+            
+            if (!nextLayer){
+                nextLayer = new TrieNode(idx);
+                cur -> addChild(c, nextLayer);
+            }else{
+                nextLayer -> index = idx;
+            }
+            cur = nextLayer;
+        }
+    }
+    
+    int f(string prefix, string suffix) {
+        string temp = suffix + "#" + prefix;
+        TrieNode* cur = root;
+        for (char c : temp){
+            TrieNode* nextLayer = NULL;
+            if(c == '#') nextLayer = cur -> children[26];
+            else nextLayer = cur -> children[c - 'a'];
+            
+            if (!nextLayer){
+                return -1;
+            }
+            cur = nextLayer;
+        }
+        return cur -> index;
+    }
+    
+};
+
+/**
+ * Your WordFilter object will be instantiated and called as such:
+ * WordFilter* obj = new WordFilter(words);
+ * int param_1 = obj->f(prefix,suffix);
+ */
