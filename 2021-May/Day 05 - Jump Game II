@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int jump(vector<int>& nums) {
+        if(nums.size() == 1) return 0;
+        int nextJumpPoint = nums[0];
+        int maxNextJumpPoint = 0;
+        int jump = 1;
+        
+        for(int i = 1 ; i < nums.size() -1 ;i++){
+            maxNextJumpPoint = max(maxNextJumpPoint, nums[i] + i);    
+            if(i == nextJumpPoint){
+                jump ++;
+                nextJumpPoint = maxNextJumpPoint;
+            }
+        }
+        return jump;
+    }
+};
+
