@@ -1,0 +1,48 @@
+class Solution {
+public:
+    int superpalindromesInRange(string left, string right) {
+        int answer = 0 ;
+        long long int leftInt = stoll(left);
+        long long int rightInt = stoll(right);
+        // 1
+        if(leftInt == 1) answer ++;
+        // 4
+        if (leftInt <= 4 && rightInt >= 4) answer++;
+        // 9
+        if (leftInt <= 9 && rightInt >= 9) answer++;
+        
+        // construct palindromes
+        for(int i = 0; i < 10000 ; i++){
+            // even number palindromes
+            string reversed = to_string(i);
+            reverse(reversed.begin(), reversed.end());
+            
+            string numString = to_string(i);
+            
+            long long int temp = stoll(numString + reversed);
+            temp*= temp;
+            if(temp == reverseInteger(temp) && temp >= leftInt && temp <= rightInt) answer ++;
+            
+            // odd number palindromes
+            for(int i = 0 ; i < 10 ; i++){
+                temp = stoll(numString + to_string(i) + reversed);
+                temp *= temp;
+                
+                if(temp == reverseInteger(temp) && temp >= leftInt && temp <= rightInt) answer++;
+            }
+        }
+        return answer;
+    }
+
+    
+    long long int reverseInteger(long long int n){
+        long long int remainder;
+        long long int reversedNumber = 0;
+        while(n != 0) {
+            remainder = n%10;
+            reversedNumber = reversedNumber*10 + remainder;
+            n /= 10;
+        }
+        return reversedNumber;
+    }
+};
