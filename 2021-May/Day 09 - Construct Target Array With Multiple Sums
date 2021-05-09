@@ -1,0 +1,30 @@
+class Solution {
+public:
+    bool isPossible(vector<int>& target) {
+        long total = 0;
+        priority_queue<int> pq(target.begin(), target.end());
+        
+        for (int num : target){
+            total += num;
+        }
+        
+        // if only 2 elements, and either one of them is 1
+        if (target.size() == 2 && (target[0] == 1 || target[1] == 1)) return true;
+        
+        int cur = -1;
+        while (true) {
+            cur = pq.top(); 
+            pq.pop();
+            total -= cur;
+            
+            // if highest value is 1 means all elements are 1 in the list so valid.
+            if (cur == 1) return true;
+            
+            // cur <= total means cur is negative 
+            if (cur <= total || total == 0) return false;
+            cur %= total;
+            total += cur;
+            pq.push(cur);
+        }
+    }
+};
