@@ -1,0 +1,32 @@
+class Solution {
+public:
+    vector<string> ambiguousCoordinates(string s) {
+        vector<string> answer;
+        int sSize = s.size();
+        for(int splitPoint = 1 ; splitPoint < sSize - 2; splitPoint ++ ) {
+            vector<string> first = searchAllPattern(s.substr(1, splitPoint));
+            vector<string> second = searchAllPattern(s.substr(splitPoint + 1, sSize - 2 - splitPoint));
+            for (string a : first){
+                for (string b : second){
+                    answer.push_back("(" + a + ", "+ b + ")");
+                }
+            }
+        }
+        return answer;
+    }
+    
+    vector<string> searchAllPattern(string s){
+        int sSize = s.size();
+        if (sSize == 1 && s[0] == '0') {cout << "hmm" ;return vector<string> {"0"};}
+        else if(s[0] == '0' && s[sSize - 1] == '0') return vector<string>();
+        else if(s[0] == '0') return vector<string> {"0." + s.substr(1, sSize - 1)};
+        else if(s[sSize - 1] == '0' || sSize == 1) return vector<string> {s};
+        
+        vector<string> ans {s};
+        for(int i = 1 ; i < sSize ; i ++){
+            ans.push_back(s.substr(0, i) + "." + s.substr(i));
+        }
+        return ans;
+        
+    }
+};
