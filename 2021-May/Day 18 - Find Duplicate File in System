@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<vector<string>> findDuplicate(vector<string>& paths) {
+        unordered_map<string, vector<string>> contentsToFiles ;
+        for(string path: paths){
+            stringstream ss(path);
+            string root;
+            string cur;
+            getline(ss, root, ' ');
+            while (getline(ss, cur, ' ')) {
+                int posOpenBracket = cur.find('(');
+                int posCloseBracket = cur.find(')');
+                int sizeOfContent = posCloseBracket - posOpenBracket - 1;
+                string name = root + '/' + cur.substr(0, posOpenBracket);
+                string content = cur.substr(posOpenBracket + 1, sizeOfContent);
+                contentsToFiles[content].push_back(name);
+            }
+        }
+
+        vector<vector<string>> answer;
+        for (auto contentAndFile : contentsToFiles) {
+            vector<string> files = contentAndFile.second;
+            if (files.size() > 1)
+                answer.push_back(files);
+        }
+        return answer;
+    }
+};
