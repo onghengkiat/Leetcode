@@ -1,0 +1,25 @@
+
+
+class Solution {
+public:
+    vector<string> findAndReplacePattern(vector<string> words, string p) {
+    // refer to https://leetcode.com/problems/find-and-replace-pattern/discuss/161288/C%2B%2BJavaPython-Normalise-Word
+        vector<string> res;
+        string normalizedPattern = F(p);
+        for (string w : words) if (F(w) == normalizedPattern) res.push_back(w);
+        return res;
+    }
+
+    string F(string w) {
+        unordered_map<char, int> m;
+        int cnt = 0;
+        for (char c : w) {
+            if (!m.count(c)) {
+                m[c] = cnt; 
+                cnt++;
+            }
+        }
+        for (int i = 0; i < w.length(); ++i) w[i] = 'a' + m[w[i]];
+        return w;
+    }
+};
