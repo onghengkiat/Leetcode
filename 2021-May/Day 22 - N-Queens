@@ -1,0 +1,45 @@
+class Solution {
+public:
+    vector<vector<string>>answer;
+    vector<vector<string>> solveNQueens(int n) {
+        vector<string> ans (n,string(n,'.'));
+        for(int i = 0 ;i < n; i++)backtrack(ans,0,i);
+        return answer;
+    }
+    
+    void backtrack(vector<string> ans, int row, int col){
+        ans[row][col] = 'Q';
+        if(!check(ans,row,col)) return;
+        if(row == ans.size() - 1){
+            answer.push_back(ans);
+            return;
+        }
+        
+        for(int i = 0; i < ans.size(); i++){
+            if(i != col) {
+                backtrack(ans, row + 1, i);
+            }
+        }
+        return;
+    }
+     
+    bool check(vector<string> board, int row, int col){
+        //check the col
+        for(int i = 0; i < row; i++){
+            if (board[i][col] == 'Q') return false;
+        }
+        
+        //check upper left diagonal
+        for(int i = row - 1, j = col - 1; i >= 0; i --, j--){
+            if(j < 0) break;
+            if(board[i][j] == 'Q') return false;
+        }
+        
+        //check upper right diagonal
+        for(int i = row - 1, j = col + 1; i >= 0; i --, j++){
+            if(j >= board.size()) break;
+            if(board[i][j] == 'Q') return false;
+        }
+        return true;
+    }
+};
