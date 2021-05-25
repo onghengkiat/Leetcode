@@ -1,0 +1,16 @@
+class Solution {
+public:
+    string toLowerCase(string s) {
+        string answer = "";
+        for (char c : s){
+            if (c >= 'A' && c <= 'Z'){
+                int diff = c - 'A';
+                char newChar = 'a' + diff;
+                answer += newChar;
+            } else {
+                answer += c;
+            }
+        }
+        return answer;
+    }
+};
