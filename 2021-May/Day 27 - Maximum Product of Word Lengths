@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int maxProduct(vector<string>& words) {
+        int n = words.size(); 
+        vector<int> value(n, 0);
+        for(int i = 0; i < n; i++) {
+            for(char c: words[i]){
+                value[i] |= 1 << (c - 'a');
+            }
+        }
+
+        int answer = 0;
+        for(int i = 0; i < n; i++){
+            for(int j = 0; j < i; j++){
+                if((value[i] & value[j]) == 0){
+                    int cur = words[i].size() * words[j].size();
+                    answer = max(cur, answer);
+                }
+            }
+        }
+        return answer;
+    }
+};
