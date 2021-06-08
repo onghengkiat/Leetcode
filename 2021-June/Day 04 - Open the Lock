@@ -1,0 +1,46 @@
+class Solution {
+public:
+    int openLock(vector<string>& deadends, string target) {
+        unordered_set<string> visited;
+        unordered_set<string> dead;
+        for (string s: deadends) dead.insert(s);
+        queue<string> curLayer;
+        
+        string startPoint = "0000";
+        if (dead.find(startPoint) != dead.end()) return -1;
+        curLayer.push(startPoint);
+        visited.insert(startPoint);
+        
+        int count = 0;
+        while(!curLayer.empty()){
+            queue<string> nextLayer;
+            while(!curLayer.empty()){
+                string cur = curLayer.front();    
+                curLayer.pop();
+                if (cur == target) {
+                    return count;
+                }
+                
+                for (int i = 0 ; i < 4; i++) {
+                    string temp = cur;
+                    
+                    temp[i] = (cur[i] - '0' + 1) % 10 + '0';
+                    if (visited.find(temp) == visited.end() && dead.find(temp) == dead.end()) {
+                        nextLayer.push(temp); 
+                        visited.insert(temp);
+                    }
+                    
+                    temp[i] = (cur[i] - '0' - 1 + 10) % 10 + '0';
+                    if (visited.find(temp) == visited.end() && dead.find(temp) == dead.end()) {
+                        nextLayer.push(temp); 
+                        visited.insert(temp);
+                    }
+                 }
+            }
+            count ++;
+            curLayer = nextLayer;
+        }
+        return -1;
+    }
+
+};
