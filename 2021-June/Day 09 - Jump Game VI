@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int maxResult(vector<int>& nums, int k){
+        long cur=0;
+        deque<int> dq;
+        for(int i = nums.size() - 1 ; i >= 0 ; i--){
+            if (dq.empty()) cur = nums[i];
+            else cur = nums[i] + nums[dq.front()]; 
+            
+            while(!dq.empty() && cur > nums[dq.back()]) dq.pop_back();	
+            
+            dq.push_back(i);          
+            
+            if(dq.front() >= i+k) dq.pop_front();
+            
+            nums[i] = cur; 
+        }
+        return cur;
+    }
+    
+};
