@@ -1,0 +1,26 @@
+class Solution {
+public:
+    
+    // reference https://leetcode.com/problems/stone-game-vii/discuss/970262/C%2B%2B-Bottom-up-DP-O(N2)-time
+    int stoneGameVII(vector<int>& A) {
+        int sz = A.size();
+        
+        vector<int> cumSum(sz + 1);
+        for (int i = 0; i < sz; i++) cumSum[i + 1] = cumSum[i] + A[i];
+        
+        vector<vector<int>> dp(sz, vector<int>(sz, 0));
+        
+        for (int len = 2; len <= sz; len++) {
+            for (int left = 0; left <= sz - len; left++) {
+                int right = left + len - 1;
+                dp[left][right] = max(
+                    cumSum[right + 1] - cumSum[left + 1] - dp[left + 1][right],  // if picks left
+                    cumSum[right] - cumSum[left] - dp[left][right - 1]           // if picks right
+                );
+            }
+        }
+        
+        return dp[0][sz - 1];
+    }
+    
+};
