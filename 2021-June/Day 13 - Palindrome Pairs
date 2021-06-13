@@ -1,0 +1,63 @@
+ class Solution {
+ public:
+     // reference https://leetcode.com/problems/palindrome-pairs/discuss/79215/Easy-to-understand-AC-C%2B%2B-solution-O(n*k2)-using-map
+     vector<vector<int>> palindromePairs(vector<string>& words) {
+         unordered_map<string, int> dict;
+         vector<vector<int>> ans;
+         
+         // reverse string as the key
+         for(int i = 0; i < words.size(); i++) {
+             string key = words[i];
+             reverse(key.begin(), key.end());
+             dict[key] = i;
+         }
+
+         for(int i = 0; i < words.size(); i++) {
+             // if empty string exists
+             // find out all the palindrome words 
+             // to deal with pairs like "" and "aba"
+             if (words[i] == "") {
+                 for(int j = 0; j < words.size(); j++){
+                     if (i == j) continue;
+                     if(isPalindrome(words[j])) {
+                        ans.push_back({dict[""], j}); 
+                     }
+                 }
+             } else {
+                 for(int j = 0; j < words[i].size(); j++) {
+                    // split into left and right
+                    string left = words[i].substr(0, j);
+                    string right = words[i].substr(j, words[i].size() - j);
+
+                    // found a reversed pair for the left side, and right side is palindrome
+                    //  and the reversed pair found isn't itself
+                    if(dict.find(left) != dict.end() && isPalindrome(right) && dict[left] != i) {
+                        ans.push_back({i, dict[left]});     
+                    }
+
+                    // found a reversed pair for the right side, and left side is palindrome
+                    // and the reversed pair found isn't itself
+                    if(dict.find(right) != dict.end() && isPalindrome(left) && dict[right] != i) {
+                        ans.push_back({dict[right], i});
+                    }
+                 }   
+             }
+         }
+
+         return ans;        
+     }
+
+     bool isPalindrome(string str){
+         int left = 0;
+         int right = str.size() - 1; 
+
+         while(left < right) {
+             if(str[left] != str[right]) return false;
+             left ++;
+             right --;
+         }
+
+         return true;
+     }
+
+ };
