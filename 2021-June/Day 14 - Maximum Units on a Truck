@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int maximumUnits(vector<vector<int>>& boxTypes, int truckSize) {
+        sort(boxTypes.begin(), boxTypes.end(),
+                  [](const vector<int>& a, const vector<int>& b) {
+          return a[1] > b[1];
+        });
+        int answer = 0;
+        int filledSize = 0;
+        for (const vector<int> box : boxTypes) {
+            if (box[0] + filledSize > truckSize) {
+                return answer + (truckSize - filledSize) * box[1];
+                break;
+            } else {
+                filledSize += box[0];
+                answer += box[0] * box[1];
+            }
+        }
+        return answer;
+    }
+};
