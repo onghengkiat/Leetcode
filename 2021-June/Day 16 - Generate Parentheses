@@ -1,0 +1,19 @@
+class Solution {
+public:
+    
+    vector<string> answer ;
+    vector<string> generateParenthesis(int n) {
+        if(n == 0) return answer;
+        recurse("",n,n);
+        return answer;
+    }
+    
+    void recurse(string str, int open,int close){
+        if(open == 0 && close == 0){answer.push_back(str);}
+        if(open > 0) recurse(str + "(", open-1, close);
+        if(open < close){
+            recurse(str + ")", open, --close);
+        }
+    }
+    
+};
