@@ -1,0 +1,43 @@
+class NumArray {
+public:
+    vector<int> nums;
+    vector<int> sum;
+    int sumSize;
+    NumArray(vector<int>& n) {
+        nums = n;
+        sumSize = ceil(sqrt(n.size()));
+        sum = vector<int> (ceil(nums.size()*1.0/sumSize), 0);
+        for(int i = 0 ; i < n.size() ; i ++){
+            sum[i/sumSize] += n[i];
+        }
+    }
+    
+    void update(int index, int val) {
+        int diff = val - nums[index];
+        nums[index] = val;
+        sum[index/sumSize] += diff;
+    }
+    
+    int sumRange(int left, int right) {
+        int ans = 0;
+        while (left % sumSize != 0 && left <= right) ans += nums[left++];
+        
+        int diff = (right - left + 1)/sumSize;
+        int start = left/sumSize;
+        for (int i = start; i < start + diff ; i++){
+            ans += sum[i];
+            left += sumSize;
+        }
+        
+        while(left <= right) ans += nums[right--];
+        
+        return ans;
+    }
+};
+
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * NumArray* obj = new NumArray(nums);
+ * obj->update(index,val);
+ * int param_2 = obj->sumRange(left,right);
+ */
