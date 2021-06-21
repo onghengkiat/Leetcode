@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<vector<int>> generate(int numRows) {
+        vector<vector<int>> answer;
+        answer.push_back(vector<int> {1});
+        
+        for(int i = 1 ; i < numRows; i ++) {
+            
+            vector<int>ans(i + 1, 1);
+            
+            int left = 1 ;
+            int right = i - 1;
+            
+            while(left <= right) {
+                ans[left] = answer[i-1][left] + answer[i-1][left-1];
+                ans[right] = ans[left];
+                left ++;
+                right --;
+            }
+            
+            answer.push_back(ans);
+        }
+        return answer;
+        
+    }
+};
