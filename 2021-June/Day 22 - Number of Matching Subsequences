@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int numMatchingSubseq(string s, vector<string>& words) {
+        vector<vector<int>> indexes (26);
+        for(int i = 0 ; i < s.size() ; i++){
+            indexes[s[i] - 'a'].push_back(i);
+        }
+        
+        
+        int answer = 0;
+        for(string word: words) {
+            int cur = -1;
+            for(char c : word) {
+                vector<int> curCharIndexes = indexes[c - 'a'];
+                auto it = upper_bound(curCharIndexes.begin(), curCharIndexes.end(), cur);
+                if (it == curCharIndexes.end()) {
+                    answer --;
+                    break;
+                }
+                cur = *it;
+            }
+            answer ++;
+        }
+        return answer;
+    }
+};
