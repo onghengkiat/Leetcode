@@ -1,0 +1,27 @@
+class Solution {
+public:
+    vector<int> parent = vector<int> (1001, -1);
+    int Find(int node) {
+        if (parent[node] == -1) return node;
+        else parent[node] = Find(parent[node]);
+        return parent[node];
+    }
+    
+    void Union(int x, int y) {
+        int xp = Find(x);
+        int yp = Find(y);
+        if (xp != yp) parent[yp] = xp;
+    }
+    
+    vector<int> findRedundantConnection(vector<vector<int> >& edges) {
+        
+        for (vector<int> edge: edges) {
+            int x = Find(edge[0]);
+            int y = Find(edge[1]);            
+            if (x == y) return edge;
+            Union(x, y);
+        }
+        
+        return vector<int>();
+    }
+};
