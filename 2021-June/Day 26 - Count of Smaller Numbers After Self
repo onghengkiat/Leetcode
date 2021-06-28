@@ -1,0 +1,38 @@
+class Solution {
+public:
+    // reference https://leetcode.com/problems/count-of-smaller-numbers-after-self/discuss/76607/C%2B%2B-O(nlogn)-Time-O(n)-Space-MergeSort-Solution-with-Detail-Explanation
+    void merge(vector<int> &answer, vector<pair<int,int>> &idx, int start, int mid, int end){
+        int i = start;
+        int j = mid + 1;
+        while(i <= mid && j <= end){
+            if(idx[i].first <= idx[j].first){
+                answer[idx[i].second] += j - mid - 1;
+                i++;
+            } else j++;
+        }
+        while(i <= mid){
+            answer[idx[i].second] += j - mid - 1;
+            i++;
+        }
+        sort(idx.begin() + start, idx.begin() + end + 1);
+    }
+    
+    void mergesort(vector<int> &answer, vector<pair<int,int>> &idx, int start, int end){
+        if(start >= end) return;
+        
+        int mid = (start + end)/2;
+        mergesort(answer, idx, start, mid);
+        mergesort(answer, idx, mid+1, end);
+        merge(answer, idx, start, mid, end);
+    }
+    
+    vector<int> countSmaller(vector<int>& nums) {
+        vector<int> answer (nums.size(), 0);
+        vector<pair<int,int>> idx;
+
+        for(int i = 0; i < nums.size(); i++) idx.push_back({nums[i],i});
+        
+        mergesort(answer, idx, 0, nums.size() - 1);
+        return answer;
+    }
+};
