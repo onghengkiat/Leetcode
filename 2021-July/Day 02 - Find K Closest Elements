@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<int> findClosestElements(vector<int>& arr, int k, int x) {
+        
+        queue<int> q;
+        int left = 0;
+        
+        while(left < k) q.push(arr[left++]);
+        
+        while(left < arr.size()){
+            if(abs(q.front() - x) > abs(arr[left] - x)) {
+                q.pop();
+                q.push(arr[left]);
+            }
+            left ++;
+        }
+        
+        vector<int> ans;
+        while(!q.empty()) {
+            ans.push_back(q.front());
+            q.pop();
+        }
+        
+        return ans;
+    }
+};
