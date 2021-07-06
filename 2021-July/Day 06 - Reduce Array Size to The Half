@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int minSetSize(vector<int>& arr) {
+        unordered_map<int, int> frequency;
+        for(int num : arr) frequency[num] ++;
+        
+        int n = arr.size();
+        int cumFreq = 0;
+        int curIdx = 0;
+        
+        vector<int> sortedFreq;
+        for(auto [key, freq]: frequency) sortedFreq.push_back(freq);
+        sort(sortedFreq.begin(), sortedFreq.end(), greater<int>());
+        
+        if (n % 2 == 0) {
+            while(cumFreq < n/2) cumFreq += sortedFreq[curIdx++];
+        } else {
+            while(cumFreq < (n+1)/2) cumFreq += sortedFreq[curIdx++];
+        }
+        return curIdx;
+    }
+};
