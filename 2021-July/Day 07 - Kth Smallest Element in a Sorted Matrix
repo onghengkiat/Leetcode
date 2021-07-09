@@ -1,0 +1,31 @@
+class Solution {
+public:
+    struct myComp {
+        constexpr bool operator()(
+            pair<int, pair<int, int>> const& a,
+            pair<int, pair<int, int>> const& b)
+            const noexcept
+        {
+            return a.first > b.first;
+        }
+    };
+    
+    int kthSmallest(vector<vector<int>>& matrix, int k) {
+        
+        priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, myComp> pq ;
+        int n = matrix.size();
+        int m = matrix[0].size();
+        
+        for(int i = 0; i < n; i ++) pq.push({matrix[i][0], {i, 0}});
+        
+        while(true) {
+            k--;
+            pair<int, pair<int, int>> element = pq.top();
+            if (k == 0) return element.first;
+            pq.pop();
+            int row = element.second.first;
+            int col = element.second.second;
+            if (col < m - 1) pq.push({matrix[row][col + 1], {row, col + 1}});
+        }
+    }
+};
