@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int numDecodings(string s) {
+        int mod = 1000000007;
+        long lastTwoCharAns = getNumberOfWays(s.substr(0, 1));
+        long lastOneCharAns = getNumberOfWays(s.substr(0, 2)) + getNumberOfWays(s.substr(1 ,1)) * lastTwoCharAns;
+        for(int i = 2; i < s.size(); i++){
+            long temp = lastOneCharAns;
+            lastOneCharAns = (lastOneCharAns * getNumberOfWays(s.substr(i, 1)) + 
+                lastTwoCharAns * getNumberOfWays(s.substr(i-1, 2))) % mod;
+            lastTwoCharAns = temp;
+        }
+        return (int)lastOneCharAns;
+    }
+    
+    int getNumberOfWays(string s){
+        if (s.size() == 1) {
+            if (s == "*") return 9;
+            else if (s == "0") return 0;
+            else return 1;
+        } else {
+            if (s == "**") return 15;
+            else if (s[0] == '*') {
+                if (s[1] <= '6') return 2;
+                else return 1;
+            } else if (s[1] == '*') {
+                if (s[0] == '1') return 9;
+                else if (s[0] == '2') return 6;
+                else return 0;
+            } else {
+                if (s >= "10" && s <= "26") return 1;
+                else return 0;
+            }
+        }
+    }
+};
