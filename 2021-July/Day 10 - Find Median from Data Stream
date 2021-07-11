@@ -1,0 +1,35 @@
+class MedianFinder {
+private:
+    // max heap
+    priority_queue<int> smallHalf;
+    // min heap
+    priority_queue<int, std::vector<int>, std::greater<int> > largeHalf;
+    
+public:
+    /** initialize your data structure here. */
+    MedianFinder() {}
+    
+    void addNum(int num) {
+        smallHalf.push(num);
+        largeHalf.push(smallHalf.top());
+        smallHalf.pop();
+        if (smallHalf.size() < largeHalf.size()) {
+            smallHalf.push(largeHalf.top());
+            largeHalf.pop();
+        }
+        
+    }
+    
+    double findMedian() {
+        // check if it is odd number of size
+        if (smallHalf.size() > largeHalf.size()) return smallHalf.top();
+        else return (smallHalf.top() + largeHalf.top()) / 2.0;
+    }
+};
+
+/**
+ * Your MedianFinder object will be instantiated and called as such:
+ * MedianFinder* obj = new MedianFinder();
+ * obj->addNum(num);
+ * double param_2 = obj->findMedian();
+ */
