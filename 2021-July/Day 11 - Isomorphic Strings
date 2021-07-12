@@ -1,0 +1,20 @@
+class Solution {
+public:
+    bool isIsomorphic(string s, string t) {
+        if (s.size() != t.size()) return false;
+        
+        unordered_map <char, char> charMappings;
+        unordered_map <char, char> charMappings2;
+        
+        for(int i = 0 ; i < s.size(); i ++){
+            
+            if (charMappings.find(s[i]) == charMappings.end() && charMappings2.find(t[i]) == charMappings2.end()) {
+                charMappings[s[i]] = t[i];
+                charMappings2[t[i]] = s[i];
+            } else {
+                if(charMappings[s[i]] != t[i]) return false;
+            }
+        }
+        return true;
+    }
+};
