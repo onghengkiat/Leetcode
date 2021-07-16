@@ -1,0 +1,35 @@
+class Solution {
+public:
+    vector<vector<int>> fourSum(vector<int>& nums, int target) {
+        vector<vector<int>> answer;
+        if(nums.size() < 3) return answer;
+        
+        sort(nums.begin(), nums.end());
+        
+        for(int z = 0; z < nums.size() -3 ; z++){
+            if(z > 0 && nums[z] == nums[z-1]) continue;
+            
+            for(int i = z+1; i < nums.size()-2 ; i++){
+                if(i > z+1 && nums[i] == nums[i-1]) continue;
+
+                int j = i + 1, r = nums.size() - 1; 
+                while(j < r){
+
+                    while(j < r && j != i +1 && nums[j] == nums[j-1] ) {j++;}
+
+                    int tar = target-(nums[j] + nums[i] + nums[z]);
+                    while(r > j && nums[r] > tar ) r--;
+                    if(r == j) break;
+
+                    if(tar == nums[r]){
+                        vector<int> v = {nums[z],nums[i],nums[j],tar};
+                        answer.push_back(v);
+                        j++; r--;
+                    }else j++;
+
+                }
+            }
+        }
+        return answer;
+    }
+};
