@@ -1,0 +1,52 @@
+class Solution {
+public:
+    vector<int> threeEqualParts(vector<int>& arr) {
+        int countOne = 0;
+        for (int num: arr) {
+            if(num == 1) countOne++;
+        }
+        
+        if(countOne % 3 != 0) return vector<int> {-1, -1};
+        if(countOne == 0) return vector<int> {0, 2};
+        
+        int countOneInEachPartition = countOne / 3;
+        int pointer = 0;
+        while(arr[pointer] != 1) pointer ++;
+        
+        // find first 1 in first partition
+        int first = pointer++;
+        
+        int counter = 0;
+        while(counter < countOneInEachPartition) {
+            if (arr[pointer] == 1) {
+                counter ++;
+            }
+            pointer ++;
+        }
+        
+        // find first 1 in second partition
+        int second = pointer - 1;
+        
+        counter = 0;
+        while(counter < countOneInEachPartition) {
+            if (arr[pointer] == 1) {
+                counter ++;
+            }
+            pointer ++;
+        }
+        
+        // find first 1 in third partition
+        int third = pointer - 1;
+        
+        while(third < arr.size()) {
+            if (arr[first] != arr[second] || arr[first] != arr[third]) return vector<int>{-1, -1};
+            first ++; 
+            second ++;
+            third ++;
+        }
+        
+        return vector<int> {first - 1, second};
+        
+        
+    }
+};
