@@ -1,0 +1,54 @@
+class Solution {
+public:
+    string pushDominoes(string dominoes) {
+        string answer = "";
+        int lastRight = -1;
+        int lastLeft = -1;
+        for(int i = 0 ; i < dominoes.size() ; i++) {
+            char c = dominoes[i];
+            if (c == 'L') {
+                if (lastRight != -1 && lastLeft < lastRight) {
+                    answer += "L";
+                    int distance = i - lastRight - 1;
+                    cout << distance;
+                    if (distance % 2 == 0) {
+                        int halfDistance = distance / 2;
+                        for(int j = 1; j <= halfDistance ; j++) {
+                            answer[i - j] = 'L';
+                        }
+                    } else {
+                        int halfDistance = (distance - 1)/ 2;
+                        for(int j = 1; j <= halfDistance ; j++) {
+                            answer[i - j] = 'L';
+                        }
+                        answer[i - halfDistance - 1] = '.';
+                    }
+                } else {
+                    answer += "L";
+                    if (lastLeft == -1){
+                        for (int j = i - 1; j >= 0; j--){
+                            answer[j] = 'L';
+                        }
+                    } else {
+                        for (int j = i - 1; j > lastLeft; j--){
+                            answer[j] = 'L';
+                        }
+                    }
+                }
+                
+                lastLeft = i ;
+            } else if(c == 'R') {
+                int j = i + 1;
+                lastRight = i;
+                answer += "R";
+                while(i < dominoes.size() - 1 && dominoes[i + 1] == '.') {
+                    answer += "R";
+                    i++;
+                }
+            } else {
+                answer += ".";
+            }
+        }
+        return answer;
+    }
+};
