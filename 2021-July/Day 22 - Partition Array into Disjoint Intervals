@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int partitionDisjoint(vector<int>& nums) {
+        int leftMax = nums[0];
+        int smallestNumber = nums[0];
+        int smallestNumberIdx = 0;
+        int curMax = nums[0];
+        int answer = 1;
+        
+        for(int i = 0 ; i < nums.size(); i++){
+            int cur = nums[i];
+            
+            if(cur > curMax) {
+                curMax = cur;
+            } else {
+                if(cur < smallestNumber) {
+                    leftMax = curMax;
+                    answer = i + 1;
+                    smallestNumber = cur;
+                    smallestNumberIdx = i;
+                    
+                } else if(cur < leftMax) {
+                    leftMax = curMax;
+                    answer = i + 1;
+                }
+            }
+        }
+        return answer;
+    }
+};
