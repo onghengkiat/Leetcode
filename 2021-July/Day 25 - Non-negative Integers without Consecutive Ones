@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int findIntegers(int n) {
+        return 1 + getCount(1, n);
+    }
+    
+private:
+    int getCount(int num, int limit) {
+        if (num > limit) {
+            return 0;
+        }
+        
+        if (num & 1) {
+            // if ends with bit 1, append with bit 0
+            return 1 + getCount(num << 1, limit);
+        } else {
+            // if ends with bit 1, append with bit 0 or 1
+            return 1 + getCount(num << 1, limit) + getCount( (num << 1 ) | 1, limit);
+        }
+    }
+};
